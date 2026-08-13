@@ -21,8 +21,8 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
-# Overridden at runtime by compose to the API service, e.g. http://api:8080
-ENV API_URL=http://127.0.0.1:8080
+# Overridden at runtime by compose; default matches service name "api"
+ENV API_URL=http://api:8080
 RUN addgroup -S -g 10001 app && adduser -S -u 10001 -G app appuser
 COPY --from=build /app/public ./public
 COPY --from=build --chown=appuser:app /app/.next/standalone ./

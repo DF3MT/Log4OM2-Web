@@ -7,8 +7,5 @@ services:
       - "3000:3000"
     environment:
       NODE_ENV: production
-      # Must reach the API container/service from inside the web container
-      API_URL: http://host.docker.internal:8080
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+      API_URL: http://api:8080
     restart: unless-stopped

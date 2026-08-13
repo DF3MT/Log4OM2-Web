@@ -7,7 +7,7 @@ function upstreamBase(): string {
   return (
     process.env.API_URL?.replace(/\/$/, "") ||
     process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") ||
-    "http://127.0.0.1:8080"
+    "http://api:8080"
   );
 }
 
