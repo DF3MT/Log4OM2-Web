@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Log4OM2 Web Portal
 
-## Getting Started
+Next.js 15 portal for the Log4OM2 multi-tenant API.
 
-First, run the development server:
+- Auth: JWT access + refresh (stored in `localStorage`, refreshed on 401)
+- Features: logbook filter, QSO CRUD, ADIF import/export, station/DB/lookup settings
+- i18n: DE / EN
+- HAProxy-ready: `GET /api/health`, authenticated views are client-dynamic, API calls use `cache: 'no-store'`
+
+## Quick start
 
 ```bash
+cp .env.example .env.local
+# set NEXT_PUBLIC_API_URL to your API (default http://localhost:8080)
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+App: http://localhost:3000  
+Health: http://localhost:3000/api/health
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+API must be running (see sibling repo `Log4OM2-API`) with CORS allowing this origin.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Docker
 
-## Learn More
+```bash
+docker compose -f docker-compose.dev.yml up --build
+```
 
-To learn more about Next.js, take a look at the following resources:
+Image: `ghcr.io/<owner>/log4om-web:latest`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Pages
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Path | Purpose |
+|------|---------|
+| `/login`, `/register` | Auth |
+| `/log` | Logbook + ADIF |
+| `/qso/new`, `/qso/{id}/edit` | QSO form |
+| `/settings/station` | Station + defaults |
+| `/settings/database` | BYODB MySQL config |
+| `/settings/lookup` | QRZ / HamQTH / Club Log |
 
-## Deploy on Vercel
+## Environment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `NEXT_PUBLIC_API_URL` — browser-visible API base URL (baked into client bundle)
