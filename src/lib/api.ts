@@ -19,10 +19,20 @@ export class ApiError extends Error {
 }
 
 function apiBase(): string {
-  return (
-    process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") ||
-    "http://localhost:8080"
-  );
+  const env = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") || "";
+  if (typeof window !== "undefined") {
+    const host = window.location.hostname;
+    const browsingLocal = host === "localhost" || host === "127.0.0.1";
+    const envIsLocal =
+      !env ||
+      /^(https?:\/\/)?(localhost|127\.0\.0\.1)(:\d+)?$/i.test(env);
+    // When the UI is opened via LAN IP but the build still points at localhost,
+    // call the API on the same host (typical: :8080 next to :3000).
+    if (!browsingLocal && envIsLocal) {
+      return `${window.location.protocol}//${host}:8080`;
+    }
+  }
+  return env || "http://localhost:8080";
 }
 
 type RequestOpts = {
