@@ -1,15 +1,14 @@
 services:
   web:
+    image: ghcr.io/df3mt/log4om-web:latest
     build:
       context: .
-      args:
-        API_URL: http://host.docker.internal:8080
-        NEXT_PUBLIC_API_URL: http://host.docker.internal:8080
     ports:
       - "3000:3000"
     environment:
       NODE_ENV: production
-      # Used if you rebuild; rewrites are resolved at build time
+      # Must reach the API container/service from inside the web container
       API_URL: http://host.docker.internal:8080
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    restart: unless-stopped

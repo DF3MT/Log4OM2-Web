@@ -10,10 +10,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
-ARG NEXT_PUBLIC_API_URL=http://127.0.0.1:8080
+# Browser always uses same-origin /backend; no public API URL required.
+ARG NEXT_PUBLIC_API_URL=
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
-ARG API_URL=http://127.0.0.1:8080
-ENV API_URL=$API_URL
 RUN npm run build
 
 FROM node:22-alpine AS runner
@@ -22,6 +21,8 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
+# Overridden at runtime by compose to the API service, e.g. http://api:8080
+ENV API_URL=http://127.0.0.1:8080
 RUN addgroup -S -g 10001 app && adduser -S -u 10001 -G app appuser
 COPY --from=build /app/public ./public
 COPY --from=build --chown=appuser:app /app/.next/standalone ./
