@@ -43,21 +43,23 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </header>
       <nav className="relative z-10 border-b border-[var(--line)] bg-[var(--night)]/70 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-2 px-4 py-2">
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`rounded-md px-3 py-1.5 text-sm font-semibold ${
-                pathname.startsWith(item.href)
-                  ? "bg-[var(--signal)] text-white"
-                  : "text-[var(--mist)] hover:bg-white/5 hover:text-[var(--paper)]"
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
-          <div className="ml-auto flex items-center gap-2">
+        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-2 sm:flex-row sm:flex-wrap sm:items-center">
+          <div className="flex flex-wrap items-center gap-2">
+            {nav.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`rounded-md px-3 py-1.5 text-sm font-semibold ${
+                  pathname.startsWith(item.href)
+                    ? "bg-[var(--signal)] text-white"
+                    : "text-[var(--mist)] hover:bg-white/5 hover:text-[var(--paper)]"
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+          <div className="flex items-center gap-2 sm:ml-auto">
             <select
               aria-label={tr("language")}
               className="rounded-md border border-[var(--line)] bg-transparent px-2 py-1 text-sm"
@@ -94,13 +96,13 @@ export function AuthShell({ children }: { children: ReactNode }) {
   }, [ready, session, router]);
 
   return (
-    <div className="relative grid min-h-screen place-items-center px-4">
+    <div className="relative flex min-h-[100dvh] items-center justify-center px-4 py-6">
       <div className="sky" aria-hidden />
       <div className="relative z-10 w-full max-w-md">
-        <div className="brand-bar mb-4 rounded-t-xl">
+        <div className="brand-bar rounded-t-xl">
           <strong>{tr("brand")}</strong>
         </div>
-        <div className="rounded-b-xl border border-[var(--line)] border-t-0 bg-[var(--night-mid)]/90 p-6 shadow-xl backdrop-blur">
+        <div className="rounded-b-xl border border-[var(--line)] border-t-0 bg-[var(--night-mid)]/90 p-4 shadow-xl backdrop-blur sm:p-6">
           <p className="mb-4 text-sm text-[var(--mist)]">{tr("tagline")}</p>
           {children}
         </div>
