@@ -1,8 +1,10 @@
+# Web service only — pulls GHCR image (CI builds on push to main).
+# For full stack see Log4OM2-API/deploy/srv/log4om or docker-compose.stack.yml
+
 services:
   web:
     image: ghcr.io/df3mt/log4om-web:latest
-    build:
-      context: .
+    pull_policy: always
     ports:
       - "3000:3000"
     environment:
